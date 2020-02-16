@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    </head>
-    <body>
-        <h2>Record</h2>
-        <p>
-            <button id="record" class="button is-light"></button>
-            <button id="stopRecord" class="button is-danger" disabled>Stop</button>
-        </p>
-        <p>
-            <audio id="recordedAudio"></audio>
-        </p>
-        <script src="amar_js/amar_js.js"></script>
-    </body>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+
+<body>
+    <div class="container is-fluid">
+        <div class="notification">
+            <h2 class="subtitle">Record</h2>
+            <div class="columns">
+                <div class="column is-full">
+                    <button id="record" class="button is-primary"> <i class="fas fa-microphone"></i>&nbsp; Record</button>
+                    <button id="stopRecord" class="button is-danger" disabled> <i class="fas fa-stop-circle"></i>&nbsp; Stop</button>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="box">
+                    <h2 class="subtitle">Recordings</h2>
+                    <audio id="recordedAudio"></audio>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="amar_js/amar_js.js"></script>
+</body>
+
 </html>

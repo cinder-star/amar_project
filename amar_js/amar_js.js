@@ -26,17 +26,16 @@ function handlerFunction(stream) {
 function sendData(data) {}
 
 record.onclick = (e) => {
-    console.log('I was clicked')
+    console.log('Record was clicked')
     record.disabled = true;
-    record.style.backgroundColor = "blue"
     stopRecord.disabled = false;
     audioChunks = [];
     rec.start();
 }
+
 stopRecord.onclick = (e) => {
-    console.log("I was clicked")
+    console.log("Stop was clicked")
     record.disabled = false;
     stop.disabled = true;
-    record.style.backgroundColor = "red"
     rec.stop();
 }
