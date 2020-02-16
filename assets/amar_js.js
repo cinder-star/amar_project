@@ -15,7 +15,7 @@ function handlerFunction(stream) {
         audioChunks.push(e.data);
         if (rec.state == "inactive") {
             let blob = new Blob(audioChunks, {
-                type: 'audio/mpeg-3'
+                type: 'audio/wav; codecs=MS_PCM'
             });
             recordedAudio.src = URL.createObjectURL(blob);
             recordedAudio.controls = true;
@@ -28,7 +28,7 @@ function handlerFunction(stream) {
 function sendData(data) {
     let fd = new FormData();
     fd.append("audio", data);
-    fd.append("filename",filename+".webm")
+    fd.append("filename",filename+".wav")
     $.ajax({
         headers: { "X-CSRFToken": $.cookie("csrftoken") },
         url: '/send/',
