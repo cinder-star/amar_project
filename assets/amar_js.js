@@ -1,3 +1,5 @@
+let params = document.body.getElementsByTagName('script');
+let filename = params[0].attributes[1].value
 navigator.mediaDevices.getUserMedia({
         audio: true
     })
@@ -26,8 +28,10 @@ function handlerFunction(stream) {
 function sendData(data) {
     let fd = new FormData();
     fd.append("audio", data);
+    fd.append("filename",filename+".webm")
     $.ajax({
-        url: '/record/send/',
+        headers: { "X-CSRFToken": $.cookie("csrftoken") },
+        url: '/send/',
         type: 'POST',
         data: fd,
         async: true,
