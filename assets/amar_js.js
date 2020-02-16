@@ -23,7 +23,20 @@ function handlerFunction(stream) {
     }
 }
 
-function sendData(data) {}
+function sendData(data) {
+    let fd = new FormData();
+    fd.append("audio", data);
+    $.ajax({
+        url: '/record/send/',
+        type: 'POST',
+        data: fd,
+        async: true,
+        contentType: false,
+        processData: false,
+    }).done((e) => {
+        console.log(e);
+    });
+}
 
 record.onclick = (e) => {
     console.log('Record was clicked')
