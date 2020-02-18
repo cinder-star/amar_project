@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from django.shortcuts import render
 from django.forms import Form
@@ -11,7 +12,9 @@ from amar_recorder.settings import BASE_DIR
 
 
 def recorder(request):
-    return render(request=request, template_name="index.html", context={"filename": "abcd"})
+    now = datetime.now()
+    filename = now.strftime("%Y%m%d%H%M%s")
+    return render(request=request, template_name="index.html", context={"filename": filename, "text": "আমি ভাত খাই"})
 
 def record(request):
     if request.method == 'POST':
