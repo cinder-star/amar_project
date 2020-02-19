@@ -8,31 +8,48 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Sentences',
+            name="Sentences",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sentence', models.TextField(unique=True)),
-                ('samples', models.IntegerField(default=0)),
-                ('verified', models.IntegerField(default=0)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("sentence", models.TextField(unique=True)),
+                ("samples", models.IntegerField(default=0)),
+                ("verified", models.IntegerField(default=0)),
             ],
-            options={
-                'db_table': 'sentences',
-            },
+            options={"db_table": "sentences",},
         ),
         migrations.CreateModel(
-            name='Recordings',
+            name="Recordings",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('filename', models.TextField()),
-                ('sentence', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='amar_project.Sentences')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("filename", models.TextField()),
+                (
+                    "sentence",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="amar_project.Sentences",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'recordings',
-            },
+            options={"db_table": "recordings",},
         ),
     ]

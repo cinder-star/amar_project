@@ -76,11 +76,9 @@ WSGI_APPLICATION = "amar_recorder.wsgi.application"
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/etc/my.cnf',
-        },
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "OPTIONS": {"read_default_file": "/etc/my.cnf",},
     }
 }
 
