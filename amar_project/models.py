@@ -16,3 +16,4 @@ class Recordings(models.Model):
 
     sentence = models.ForeignKey(Sentences, to_field="id", on_delete=models.CASCADE)
     filename = models.TextField(null=False, blank=False)
+    is_varified = models.BooleanField(null=False, default=False)
