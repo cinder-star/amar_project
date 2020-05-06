@@ -1,10 +1,14 @@
 let sentence_number = "";
 let div = document.getElementById("record_box");
 let text = document.getElementById("text");
+let csrftoken = $("#record_box").find('input[name=csrfmiddlewaretoken]').val()
 
 function get_sentence() {
 	let fd = new FormData();
 	let x = localStorage.getItem("text_list");
+	$.ajaxSetup({
+		data: {csrfmiddlewaretoken: csrftoken },
+	});
 	if (x==null || x.length >= 13) {
 		x = "";
 		localStorage.setItem("text_list", "");
@@ -12,7 +16,7 @@ function get_sentence() {
 	fd.append("all_strings", x);
 	$.ajax({
         headers: {
-			"X-CSRFToken": $.cookie("csrftoken"),
+			"X-CSRFToken": csrftoken,
 		},
         url: '/get_new_sentence/',
         type: 'POST',
@@ -211,7 +215,7 @@ function sendData(data) {
 	fd.append("all_strings", x);
     $.ajax({
         headers: {
-			"X-CSRFToken": $.cookie("csrftoken"),
+			"X-CSRFToken": csrftoken,
 		},
         url: '/send/',
         type: 'POST',

@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="{% static 'jquery.js' %}"></script>
-    <script src="{% static 'jquery-cookie.js' %}"></script>
+    <!-- <script src="{% static 'jquery-cookie.js' %}"></script> -->
 </head>
 
 <body>
@@ -21,10 +21,10 @@
                     </div>
                 </div>
                 <div class="columns">
-                    <div class="box" id="record_box">
+                    <form class="box" id="record_box" method=""> {% csrf_token %}
                         <h2 class="subtitle">Recordings</h2>
                         <audio id="recordedAudio"></audio>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
