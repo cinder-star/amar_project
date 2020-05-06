@@ -1,7 +1,38 @@
-let params = document.body.getElementsByTagName("script");
-let sentence_number = params[0].attributes[1].value;
+let sentence_number = "";
 let div = document.getElementById("record_box");
 let text = document.getElementById("text");
+
+function get_sentence() {
+	let fd = new FormData();
+	let x = localStorage.getItem("text_list");
+	if (x==null || x.length >= 13) {
+		x = "";
+		localStorage.setItem("text_list", "");
+	}
+	fd.append("all_strings", x);
+	$.ajax({
+        headers: {
+			"X-CSRFToken": $.cookie("csrftoken"),
+		},
+        url: '/get_new_sentence/',
+        type: 'POST',
+        data: fd,
+        async: true,
+        contentType: false,
+        processData: false,
+    }).done((e) => {
+		if(x==""){
+			localStorage.setItem("text_list", e.number);
+		} else {
+			localStorage.setItem("text_list", x + ", "+e.number.toString());
+		}
+		text.innerHTML = e.sentence;
+		sentence_number = e.number.toString();
+        console.log(localStorage.getItem("text_list"));
+    });
+}
+
+get_sentence();
 
 /*
  * Date Format 1.2.3

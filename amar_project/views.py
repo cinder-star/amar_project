@@ -18,7 +18,7 @@ def recorder(request):
     return render(
         request=request,
         template_name="index.html",
-        context={"filename": str(sentence.id), "text": sentence.sentence},
+        context={}
     )
 
 
@@ -38,6 +38,16 @@ def record(request):
         sentence = Sentences.objects.get(id=sentence_no)
         sentence.samples = sentence.samples + 1
         sentence.save()
+        next_sentence = get_next_sentence(all_strings)
+        return JsonResponse({"number": next_sentence, "sentence": Sentences.objects.get(id=next_sentence).sentence})
+    return HttpResponse()
+
+
+def new_sentence(request):
+    if request.method == "POST":
+        directory = os.path.join(BASE_DIR, "media")
+        myform = Form(request.POST, request.FILES)
+        all_strings = request.POST.get("all_strings", None)
         next_sentence = get_next_sentence(all_strings)
         return JsonResponse({"number": next_sentence, "sentence": Sentences.objects.get(id=next_sentence).sentence})
     return HttpResponse()
