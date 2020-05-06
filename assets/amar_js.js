@@ -1,5 +1,7 @@
-let params = document.body.getElementsByTagName('script');
-let sentence_number = params[0].attributes[1].value
+let params = document.body.getElementsByTagName("script");
+let sentence_number = params[0].attributes[1].value;
+let div = document.getElementById("record_box");
+let text = document.getElementById("text");
 
 /*
  * Date Format 1.2.3
@@ -127,6 +129,17 @@ Date.prototype.format = function (mask, utc) {
 	return dateFormat(this, mask, utc);
 };
 
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = this.length - 1; i >= 0; i--) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
+}
+
 
 navigator.mediaDevices.getUserMedia({
         audio: true
@@ -140,6 +153,7 @@ function handlerFunction(stream) {
     let audioChunks = [];
     rec = new MediaRecorder(stream);
     rec.ondataavailable = (e) => {
+		audioChunks = []
         audioChunks.push(e.data);
         if (rec.state == "inactive") {
             let blob = new Blob(audioChunks, {
@@ -156,11 +170,19 @@ function handlerFunction(stream) {
 function sendData(data) {
     let fd = new FormData();
     let now = new Date();
-    let nowstring = now.format("yyyymmddHHMMss");
+	let nowstring = now.format("yyyymmddHHMMss");
+	let x = localStorage.getItem("text_list");
+	if (x==null || x.length >= 13) {
+		x = "";
+		localStorage.setItem("text_list", "");
+	}
     fd.append("audio", data);
-    fd.append("filename",sentence_number+"-"+nowstring+".wav")
+	fd.append("filename", sentence_number+"-"+nowstring+".wav");
+	fd.append("all_strings", x);
     $.ajax({
-        headers: { "X-CSRFToken": $.cookie("csrftoken") },
+        headers: {
+			"X-CSRFToken": $.cookie("csrftoken"),
+		},
         url: '/send/',
         type: 'POST',
         data: fd,
@@ -168,12 +190,23 @@ function sendData(data) {
         contentType: false,
         processData: false,
     }).done((e) => {
-        console.log(nowstring);
-        console.log(e);
+		if(x==""){
+			localStorage.setItem("text_list", e.number);
+		} else {
+			localStorage.setItem("text_list", x + ", "+e.number.toString());
+		}
+		text.innerHTML = e.sentence;
+		sentence_number = e.number.toString();
+        console.log(localStorage.getItem("text_list"));
     });
 }
 
 record.onclick = (e) => {
+	document.getElementById("recordedAudio").remove();
+	let audio_recorder = document.createElement("audio");
+	audio_recorder.setAttribute("id", "recordedAudio");
+	div.appendChild(audio_recorder);
+
     record.disabled = true;
     stopRecord.disabled = false;
     audioChunks = [];
