@@ -1,0 +1,1 @@
+web: gunicorn amar_recorder.wsgi

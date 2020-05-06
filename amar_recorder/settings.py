@@ -11,21 +11,32 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import django_heroku
+import dj_database_url
+import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "b+p=@ojy5sv)%a#gsk0o9#9%od!#*6w)=3n8gcqx9+0484d(b^"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if os.getenv("ENV") == "prod" else True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    os.getenv("PROD_HOST"),
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
@@ -82,6 +93,27 @@ DATABASES = {
     }
 }
 
+if os.getenv("ENV") == "prod":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "edusys",
+            "USER": os.getenv("DBUSER"),
+            "PASSWORD": os.getenv("DBPASSWORD"),
+            "HOST": "localhost",
+            "PORT": "",
+        }
+    }
+elif os.getenv("ENV") == "heroku":
+    DATABASES["default"] = dj_database_url.config(conn_max_age=600)
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "OPTIONS": {"read_default_file": "/etc/my.cnf",},
+        }
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -118,3 +150,6 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "assets"),)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+if os.getenv("ENV") == "heroku":
+    django_heroku.settings(locals())
