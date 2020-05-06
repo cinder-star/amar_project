@@ -28,7 +28,6 @@ function get_sentence() {
 		}
 		text.innerHTML = e.sentence;
 		sentence_number = e.number.toString();
-        console.log(localStorage.getItem("text_list"));
     });
 }
 
@@ -228,7 +227,6 @@ function sendData(data) {
 		}
 		text.innerHTML = e.sentence;
 		sentence_number = e.number.toString();
-        console.log(localStorage.getItem("text_list"));
     });
 }
 
